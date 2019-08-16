@@ -96,7 +96,9 @@ melt.f<-function(d){
   d<-d[colnames(d)!="sample_dt"]
   d<-d[d$Year==1999|d$Year==2000|d$Year==2001|d$Year==2002|d$Year==2003|d$Year==2004|d$Year==2005|d$Year==2006|d$Year==2007|d$Year==2008|d$Year==2009|d$Year==2010|d$Year==2011|d$Year==2012|d$Year==2013|d$Year==2014|d$Year==2015|d$Year==2016|d$Year==2017|d$Year==2018|d$Year==2019,]
   d<-d[d$Month==11|d$Month==12|d$Month==1|d$Month==2|d$Month==3|d$Month==4,]
-  de<-data.frame("Year"=d$Year,"TN_out"=d$'30209'*d$'00600', "Nitrate"=d$'30209'*d$'00618', "ammonium"=d$'30209'*d$'00608', "Orthophosphate"=d$'30209'*d$'00660')
+  #de<-data.frame("Year"=d$Year,"TN_out"=d$'30209'*d$'00600', "Nitrate"=d$'30209'*d$'00618', "ammonium"=d$'30209'*d$'00608', "Orthophosphate"=d$'30209'*d$'00660')
+  de<-data.frame("Year"=d$Year,"TN_out"=d$'00600', "Nitrate"=d$'00618', "ammonium"=d$'00608', "Orthophosphate"=d$'00660')
+  
   de<-aggregate(de[,2:5], list(de$Year), mean)
   de
   
@@ -365,9 +367,9 @@ Raystown1$Group<-c(rep("Rural", nrow(Raystown1)))
 
 library(ggplot2)
 
-TN_recent20<-rbind(RockCreek1,PaintBranch1,Mattawoman1,QuanticoCreek1,Chopwamsic1,Beaverdam1,Sligo1,littledifficult1,deadrun1,deadrun2,littledifficult2,Shenandoah1,Conococheaque1,Opequon1,Back1,WarmSprings1,Cacapon1,Potomac_SB1,Patterson1,Abran1,Dragon1,Rappahannock1,Mattaponi1,Panunky1,Rapidan1,Rappahannock2,Chickahominy1,Appomattox1,James1,James2,Tioga1,Pine1,Spring1,Beech1,Bald1,Pequea1,Conewago1,Muddy2,Susquehanna3,Paxton1,Beeches1,Juniata1,Raystown1)
+TN_recent20<-rbind(RockCreek1,PaintBranch1,Mattawoman1,QuanticoCreek1,Chopwamsic1,Beaverdam1,Sligo1,littledifficult1,deadrun1,deadrun2,littledifficult2,Shenandoah1,Conococheaque1,Opequon1,Back1,WarmSprings1,Cacapon1,Potomac_SB1,Patterson1,Abran1,Dragon1,Rappahannock1,Mattaponi1,Panunky1,Rapidan1,Rappahannock2,Chickahominy1,Appomattox1,James1,James2,Tioga1,Pine1,Spring1,Beech1,Bald1,Pequea1,Conewago1,Muddy2,Susquehanna3,Paxton1,Beeches1,Juniata1,Susquehanna2,Raystown1)
 # has outliers: Susquehanna2,
-data$Treatment <- factor(data$Treatment, levels=c("Y", "X", "Z"))
+
 TN_recent20$Group.1<-factor(TN_recent20$Group.1, levels=c('1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019'))
 
 
