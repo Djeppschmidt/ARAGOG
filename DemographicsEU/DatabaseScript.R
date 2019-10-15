@@ -17,7 +17,7 @@ incomePcap.w<-incomePcap.w[,-1]
 incomePcap.w[] <- lapply(incomePcap.w, function(x) as.numeric(gsub(",","", x)))
 D.income<-data.frame("2009"=incomePcap.w$`2009`-incomePcap.w$`2008`, "2010"=incomePcap.w$`2010`-incomePcap.w$`2009`, "2011"=incomePcap.w$`2011`-incomePcap.w$`2010`, "2012"= incomePcap.w$`2012`-incomePcap.w$`2011`, "2013"=incomePcap.w$`2013`-incomePcap.w$`2012`, "2014"=incomePcap.w$`2014`-incomePcap.w$`2013`, "2015"=incomePcap.w$`2015`-incomePcap.w$`2014`,"2016"=incomePcap.w$`2016`-incomePcap.w$`2015`, "2017"=incomePcap.w$`2017`-incomePcap.w$`2016`)
 heatmap(as.matrix(D.income), Rowv=NA, Colv="Rowv", scale = "none",col=pal, main="Delta per cap. income")
-saveRDS(D.income, "~/Documents/GitHub/ARAGOG/DemographicsEU/PerCapIncome/PerCapIncome.RDS")
+saveRDS(incomePcap.w, "~/Documents/GitHub/ARAGOG/DemographicsEU/PerCapIncome/PerCapIncome.RDS")
 
 RegionAgIncome<-read.csv("~/Documents/GitHub/ARAGOG/DemographicsEU/AgIncome/nama_10r_2coe_1_Data.csv") # agricultural income per region in million EU
 AgIncome.w<-dcast(RegionAgIncome, GEO~TIME, value.var="Value")
@@ -41,3 +41,16 @@ make.heatmap(Poverty.w, "Delta poverty") # needs some work...
 Poverty.w[] <- lapply(Poverty.w, function(x) as.numeric(gsub(",","", x)))
 Poverty.w<-Poverty.w[,-c(1,2)]
 saveRDS(Poverty.w, "~/Documents/GitHub/ARAGOG/DemographicsEU/Poverty_percent/Poverty.RDS")
+
+
+### don't know how to plot shapefile #
+library(maptools)
+library(raster)
+library(rgdal)
+library(sf)
+
+EU_map<-st_read("/Downloads/NUTS_RG_01M_2013_4326_LEVL_2")
+?readOGR
+f<-system.file("~/Downloads/NUTS_RG_01M_2013_4326_LEVL_2.shp", package="raster")
+s1 <- shapefile("~/Downloads/NUTS_RG_01M_2013_4326_LEVL_2.shp") 
+s2 <- st_read("~/Downloads/NUTS_RG_01M_2013_4326_LEVL_2.shp")
