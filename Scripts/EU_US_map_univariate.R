@@ -3,14 +3,14 @@ source("Scripts/library.R")
 #plots functions
 make_EU_plot <- function (df, variable_to_plot) {
   ggplot(df, aes(fill = as.numeric(variable_to_plot)))+
-    geom_sf(color = "grey", size = 0.01)+
+    geom_sf(color = "grey", size = 0.001)+
     coord_sf(xlim = c(-20, 30), ylim = c(30,70))+
     scale_fill_gradient(low = "#ef8a62", high = "#67a9cf")+
     theme_bw()
 }
 make_US_plot <- function (df, variable_to_plot) {
   ggplot(df, aes(fill = as.numeric(variable_to_plot)))+
-    geom_sf(color = "grey", size = 0.01)+
+    geom_sf(color = "grey", size = 0.001)+
     coord_sf(xlim = c(-125, -60), ylim = c(20,50))+
     scale_fill_gradient(low = "#ef8a62", high = "#67a9cf")+
     theme_bw()
