@@ -6,7 +6,8 @@ pal <- colorRampPalette(brewer.pal(11, "RdYlGn"))(100)
 make.heatmap<-function(x, title){
   m1<-x
   m1[]<- lapply(x, function(x) as.numeric(gsub(",","", x)))
-  m2<-data.frame("2009"=m1$`2009`-m1$`2008`, "2010"=m1$`2010`-m1$`2009`, "2011"=m1$`2011`-m1$`2010`, "2012"= m1$`2012`-m1$`2011`, "2013"=m1$`2013`-m1$`2012`, "2014"=m1$`2014`-m1$`2013`, "2015"=m1$`2015`-m1$`2014`,"2016"=m1$`2016`-m1$`2015`, "2017"=m1$`2017`-m1$`2016`)
+  m2<-data.frame("2015"=m1$`2015`-m1$`2014`,"2016"=m1$`2016`-m1$`2015`, "2017"=m1$`2017`-m1$`2016`)
+  #m2<-data.frame("2009"=m1$`2009`-m1$`2008`, "2010"=m1$`2010`-m1$`2009`, "2011"=m1$`2011`-m1$`2010`, "2012"= m1$`2012`-m1$`2011`, "2013"=m1$`2013`-m1$`2012`, "2014"=m1$`2014`-m1$`2013`, "2015"=m1$`2015`-m1$`2014`,"2016"=m1$`2016`-m1$`2015`, "2017"=m1$`2017`-m1$`2016`)
   heatmap(as.matrix(m2), Rowv=NA, Colv="Rowv", scale = "none",col=pal, main=title)
 }
 
@@ -42,15 +43,46 @@ Poverty.w[] <- lapply(Poverty.w, function(x) as.numeric(gsub(",","", x)))
 Poverty.w<-Poverty.w[,-c(1,2)]
 saveRDS(Poverty.w, "~/Documents/GitHub/ARAGOG/DemographicsEU/Poverty_percent/Poverty.RDS")
 
-
+ATRiskPoverty<-read.csv("~/Documents/GitHub/ARAGOG/DemographicsEU/AtRiskPoverty.csv")
+rownames(ATRiskPoverty)<-ATRiskPoverty$geo.time
+ATRiskPoverty<-ATRiskPoverty[,-c(1,2)]
+ATRiskPoverty[]<-lapply(ATRiskPoverty, function(x) as.numeric(gsub("b", "", x)))
+make.heatmap(Poverty.w, "Delta poverty") # needs some work...
+saveRDS(ATRiskPoverty, "~/Documents/GitHub/ARAGOG/DemographicsEU/Poverty_percent/ATRiskPoverty.RDS")
 ### don't know how to plot shapefile #
 library(maptools)
 library(raster)
 library(rgdal)
 library(sf)
-
 EU_map<-st_read("/Downloads/NUTS_RG_01M_2013_4326_LEVL_2")
 ?readOGR
 f<-system.file("~/Downloads/NUTS_RG_01M_2013_4326_LEVL_2.shp", package="raster")
 s1 <- shapefile("~/Downloads/NUTS_RG_01M_2013_4326_LEVL_2.shp") 
 s2 <- st_read("~/Downloads/NUTS_RG_01M_2013_4326_LEVL_2.shp")
+
+
+# spatial data plug and play ####
+ExtractSpatialToTable<-function(cat, input.raster, counties, NUTS2){
+  if(cat=="EU"){
+    EU <- readOGR(input, stringsAsFactors = FALSE)
+    EU_proj <- spTransform(EU, CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+crs(US_proj)
+raster <- raster("FertilizerBalance_Geotiff/FertilizerBalance_Geotiff/NitrogenBalanceOnLandscape_140Crops.tif")
+raster.values.EU <- extract(raster,EU)
+mean.EU <- lapply(raster.values.EU, FUN=mean)
+mean.EU.df<-t(as.data.frame(mean.EU))
+EU@data <- data.frame(EU@data, N_balance_140crops = mean.EU.df)
+colnames(US_proj@data)[4] = "CTFIPS" 
+    }
+  if(cat=="US"){
+    US <- readOGR("~/PhD Leeds/ARAGOG project/Data/tl_2014_us_county/tl_2014_us_county.shp")
+    US_proj <- spTransform(US, CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+crs(US_proj)
+
+
+colnames(US_proj@data)[4] = "CTFIPS" 
+}
+  if(cat=="GLOBAL"){} else (print("Check cat; Must be one of EU, US, GLOBAL"))
+  
+}
+
