@@ -1,9 +1,10 @@
 source("Scripts/library.R")
 
+#------ no need to change anything in here unless you want to change maps graphics-------
 #plots functions
 make_EU_plot <- function (df, variable_to_plot) {
   ggplot(df, aes(fill = as.numeric(variable_to_plot)))+
-    geom_sf(color = "grey", size = 0.001)+
+    geom_sf(color = "grey", size = 0.001)+ #lwd = 0
     coord_sf(xlim = c(-20, 30), ylim = c(30,70))+
     scale_fill_gradient(low = "#ef8a62", high = "#67a9cf")+
     theme_bw()
@@ -20,8 +21,11 @@ make_US_plot <- function (df, variable_to_plot) {
 ShapeEU <- readShapeSpatial("NUTS2_shapes/NUTS_RG_01M_2013_4326_LEVL_2.shp")
 ShapeUS <- readShapeSpatial("County_shapes/us_county_updated.shp")
 
-#load tables of thevariable to plot
-NUTS2_N_balance <- read_xlsx("Ready_datasets/NUTS2_NitrogenBalance_140crops.xlsx")
+
+# Mapping one indicator variable of choice from a table in the Ready_tables folder
+
+#load tables of the variable to plot. Set variable name and set table path
+NUTS2_N_balance <- read_xlsx("Ready_datasets/NUTS2_Nitrogen_balance_ha_140_crops.xlsx")
 CTFIPS_N_balance <- read_xlsx("Ready_datasets/CTFIPS_NitrogenBalance_140crops.xlsx")
 
 #merge shapefile with variable to plot, by region ID, then turn back into a spatial file (sf)

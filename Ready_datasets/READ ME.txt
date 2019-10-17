@@ -1,0 +1,5 @@
+Indicator tables ready to be used in maps and models. 
+
+MUST contain a NUTS_ID or CTFIPS column for EU and US datasets respectively. 
+Please be consisent with naming the variable columns between US and EU datasets.
+e.g. "Pop_density" as value column in both NUTS2_Population_density and CTFIPS_Population_density
