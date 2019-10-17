@@ -1,6 +1,10 @@
+###########
+# Create EU and US maps for one variable
+# of choice from a table in the Ready_tables folder
+###########
+
 source("Scripts/library.R")
 
-#------ no need to change anything in here unless you want to change maps graphics-------
 #plots functions
 make_EU_plot <- function (df, variable_to_plot) {
   ggplot(df, aes(fill = as.numeric(variable_to_plot)))+
@@ -22,9 +26,7 @@ ShapeEU <- readShapeSpatial("NUTS2_shapes/NUTS_RG_01M_2013_4326_LEVL_2.shp")
 ShapeUS <- readShapeSpatial("County_shapes/us_county_updated.shp")
 
 
-# Mapping one indicator variable of choice from a table in the Ready_tables folder
-
-#load tables of the variable to plot. Set variable name and set table path
+#Load tables of the variable to plot. Set variable name and path
 NUTS2_N_balance <- read_xlsx("Ready_datasets/NUTS2_Nitrogen_balance_ha_140_crops.xlsx")
 CTFIPS_N_balance <- read_xlsx("Ready_datasets/CTFIPS_NitrogenBalance_140crops.xlsx")
 
